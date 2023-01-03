@@ -55,7 +55,7 @@ pipeline{
             steps{
                 echo "========executing build========"
                 withMaven {
-                    sh "mvn vreify"
+                    sh "mvn verify"
                 }                
             }
             post{
