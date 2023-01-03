@@ -16,8 +16,8 @@ pipeline{
             }
         }
         stage("Calculate and set 3-number version"){
-            when {
-                GIT_BRANCH.contains('release/')
+             when {
+                expression { GIT_BRANCH.contains('release/') }
             }
             steps{
                 echo "========Calculate and set 3-number version========"
