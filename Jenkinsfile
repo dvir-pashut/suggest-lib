@@ -19,7 +19,7 @@ pipeline{
                 }
             }
         }
-        stage("A"){
+        stage("B"){
             steps{
                 echo "========executing A========"
             }
@@ -35,7 +35,7 @@ pipeline{
                 }
             }
         }
-        stage("A"){
+        stage("C"){
             steps{
                 echo "========executing A========"
             }
