@@ -4,7 +4,7 @@ pipeline{
     stages{
         stage("A"){
             when {
-                expression { BRANCH_NAME == 'release' || BRANCH_NAME == 'main' }
+                expression { GIT_BRANCH.contains('release/') || BRANCH_NAME == 'main' }
             }
             
             steps{
@@ -13,7 +13,7 @@ pipeline{
             }
             post{
                 always{
-                    echo "========always========"
+                    echo "========always daaaaa========"
                 }
                 success{
                     echo "========A executed successfully========"
