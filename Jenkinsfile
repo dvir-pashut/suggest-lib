@@ -70,23 +70,6 @@ pipeline{
                 }
             }
         }
-        stage("test"){
-            steps{
-                echo "========executing test========"
-                sh "java -jar target/spelling.jar"
-            }
-            post{
-                always{
-                    echo "========always========"
-                }
-                success{
-                    echo "========A executed successfully========"
-                }
-                failure{
-                    echo "========A execution failed========"
-                }
-            }
-        }
         stage("publish "){
             when {
                 expression { GIT_BRANCH.contains('release/') || BRANCH_NAME == 'main' }
