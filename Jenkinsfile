@@ -4,7 +4,7 @@ pipeline{
     stages{
         stage("A"){
             when {
-                branch 'main'
+                branch 'main' || branch 'release/*'
             }
             
             steps{
