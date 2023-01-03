@@ -31,7 +31,7 @@ pipeline{
                         NEXTVERSION=\$(git describe --tags | cut -d '-' -f1 | awk -F. -v OFS=. '{\$NF += 1 ; print}')
                         echo "\${NEXTVERSION}" > v.txt
                     else
-                        echo "${version}.1" > v.txt
+                        echo "\$(git branch | grep '*'| cut -d '/' -f2).1" > v.txt
                     fi
                     """
                     sh "mvn versions:set -DnewVersion=\${NEXTVERSION}"                
@@ -111,9 +111,13 @@ pipeline{
                 }
             }
         }
-        stage("B"){
+        stage("push tag"){
+            when {
+                expression { GIT_BRANCH.contains('release/') }
+            }
             steps{
-                echo "========executing A========"
+                echo "========executing pushing tag========"
+                
             }
             post{
                 always{
