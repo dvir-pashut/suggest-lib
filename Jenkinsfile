@@ -3,6 +3,10 @@ pipeline{
 
     stages{
         stage("A"){
+            when {
+                branch 'master'
+            }
+            
             steps{
                 echo "========executing A========"
 
