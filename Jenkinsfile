@@ -10,7 +10,44 @@ pipeline{
             steps{
                 echo "========checking out (loking hella fine)========"
                 deleteDir()
-                checkout scm 
+                checkout scm
+                sh "mvn clean"
+                sh "git checkout ${GIT_BRANCH}"
+            }
+        }
+        stage("Calculate and set 3-number version"){
+            when {
+                GIT_BRANCH.contains('release/')
+            }
+            steps{
+                echo "========Calculate and set 3-number version========"
+                script{
+                    sh """
+                    
+                    NEXTVERSION=\$(git describe --tags | cut -d '-' -f1 | awk -F. -v OFS=. '{\$NF += 1 ; print}')
+                    
+                    if [ \$NEXTVERSION -eq  "" ] 
+                    then
+                        NEXTVERSION=\$(git describe --tags | cut -d '-' -f1 | awk -F. -v OFS=. '{\$NF += 1 ; print}')
+                        echo "\${NEXTVERSION}" > v.txt
+                    else
+                        echo "${version}.1" > v.txt
+                    fi
+                    """
+                    sh "mvn versions:set -DnewVersion=\${NEXTVERSION}"                
+                }
+            }
+            post{
+                always{
+                    echo "========Calculate and set 3-number version finished========"
+
+                }
+                success{
+                    echo "========Calculate and set 3-number version executed successfully========"
+                }
+                failure{
+                    echo "========Calculate and set 3-number version execution failed========"
+                }
             }
         }
         
@@ -50,9 +87,9 @@ pipeline{
                 }
             }
         }
-        stage("publish case on main"){
+        stage("publish "){
             when {
-                BRANCH_NAME == 'main' 
+                expression { GIT_BRANCH.contains('release/') || BRANCH_NAME == 'main' }
             }
             steps{
                 echo "========executing publishing to artifactory========"
