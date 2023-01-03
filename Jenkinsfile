@@ -4,7 +4,7 @@ pipeline{
     stages{
         stage("A"){
             when {
-                branch 'master'
+                branch 'main'
             }
             
             steps{
